@@ -33,6 +33,10 @@ def load_chunks_from_json(json_path: Path) -> list:
                 "source_file": item["source_file"],
                 "page": item["page"],
                 "service": item["service"],
+                "service_detail": item.get("service_detail"),
+                "fee_type": item.get("fee_type"),
+                "card_type": item.get("card_type"),
+                "section": item.get("section"),
                 "segment": item["segment"],
                 "fee_code": item.get("fee_code"),
                 "fee_value": item["fee_value"],
@@ -162,5 +166,24 @@ if submitted:
             with st.expander("Context đã retrieve (từ JSON chunks)"):
                 for i, doc in enumerate(docs, 1):
                     st.markdown(f"**Doc {i}**")
-                    st.caption(f"Segment: {doc.metadata.get('segment')} | Page: {doc.metadata.get('page')} | Fee code: {doc.metadata.get('fee_code')}")
+                    meta_bits = []
+                    section = doc.metadata.get("section")
+                    fee_type = doc.metadata.get("fee_type")
+                    card_type = doc.metadata.get("card_type")
+                    fee_code = doc.metadata.get("fee_code")
+                    if section:
+                        meta_bits.append(f"Section: {section}")
+                    if fee_type:
+                        meta_bits.append(f"Fee type: {fee_type}")
+                    if card_type:
+                        meta_bits.append(f"Card type: {card_type}")
+                    meta_bits.extend(
+                        [
+                            f"Segment: {doc.metadata.get('segment')}",
+                            f"Page: {doc.metadata.get('page')}",
+                        ]
+                    )
+                    if fee_code:
+                        meta_bits.append(f"Fee code: {fee_code}")
+                    st.caption(" | ".join(meta_bits))
                     st.write(doc.page_content)
