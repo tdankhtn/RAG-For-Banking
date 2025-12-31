@@ -48,8 +48,10 @@ class OfflineRAG:
 [CÂU HỎI]:
 {question}
 
-Hãy trả lời dựa trên tài liệu. Nếu tài liệu không có thông tin, nói rõ "Không có thông tin".
-Trả lời đầy đủ thông tin (3-5 câu chi tiết), không thêm bất kỳ chi tiết nào ngoài tài liệu.
+Hãy trả lời dựa trên tài liệu. Nếu tài liệu không có thông tin hãy trả lời như trong tài liệu và
+cuối câu kèm thêm dòng "Hy vọng đây là thông tin bạn cần hỏi, nếu bạn muốn thông tin chi tiết hơn vui lòng
+liên hệ Hotline Techcombank, hoặc đến chi nhánh Techcombank gần nhất để được hô trợ".
+Trả lời đầy đủ thông tin (1-3 câu chi tiết), không thêm bất kỳ chi tiết nào ngoài tài liệu.
 
 [TRẢ LỜI]:"""
         )

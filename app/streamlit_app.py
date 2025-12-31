@@ -26,21 +26,25 @@ def load_chunks_from_json(json_path: Path) -> list:
     
     for item in data:
         doc = Document(
-            page_content=item["text"],
+            page_content=item.get("text", ""),
             metadata={
-                "id": item["id"],
-                "doc_id": item["doc_id"],
-                "source_file": item["source_file"],
-                "page": item["page"],
-                "service": item["service"],
+                "id": item.get("id"),
+                "doc_id": item.get("doc_id"),
+                "source_file": item.get("source_file"),
+                "page": item.get("page"),
+                "service": item.get("service"),
                 "service_detail": item.get("service_detail"),
                 "fee_type": item.get("fee_type"),
                 "card_type": item.get("card_type"),
                 "section": item.get("section"),
-                "segment": item["segment"],
+                "segment": item.get("segment"),
                 "fee_code": item.get("fee_code"),
-                "fee_value": item["fee_value"],
-                "chunk_type": item["chunk_type"],
+                "fee_value": item.get("fee_value"),
+                "topic": item.get("topic"),
+                "heading": item.get("heading"),
+                "question": item.get("question"),
+                "answer": item.get("answer"),
+                "chunk_type": item.get("chunk_type"),
             }
         )
         chunks.append(doc)
@@ -170,6 +174,8 @@ if submitted:
                     section = doc.metadata.get("section")
                     fee_type = doc.metadata.get("fee_type")
                     card_type = doc.metadata.get("card_type")
+                    topic = doc.metadata.get("topic")
+                    heading = doc.metadata.get("heading")
                     fee_code = doc.metadata.get("fee_code")
                     if section:
                         meta_bits.append(f"Section: {section}")
@@ -177,12 +183,16 @@ if submitted:
                         meta_bits.append(f"Fee type: {fee_type}")
                     if card_type:
                         meta_bits.append(f"Card type: {card_type}")
-                    meta_bits.extend(
-                        [
-                            f"Segment: {doc.metadata.get('segment')}",
-                            f"Page: {doc.metadata.get('page')}",
-                        ]
-                    )
+                    if topic:
+                        meta_bits.append(f"Topic: {topic}")
+                    if heading:
+                        meta_bits.append(f"Heading: {heading}")
+                    segment = doc.metadata.get("segment")
+                    if segment:
+                        meta_bits.append(f"Segment: {segment}")
+                    page = doc.metadata.get("page")
+                    if page is not None:
+                        meta_bits.append(f"Page: {page}")
                     if fee_code:
                         meta_bits.append(f"Fee code: {fee_code}")
                     st.caption(" | ".join(meta_bits))
